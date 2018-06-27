@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using ShortLink.Models;
 
-namespace ShortLink.Helpers
+namespace ShortLink.Helpers.Abstract
 {
     public interface IRepository
     {

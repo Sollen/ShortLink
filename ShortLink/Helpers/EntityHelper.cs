@@ -1,28 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using ShortLink.Helpers.Abstract;
 using ShortLink.Models;
 
 namespace ShortLink.Helpers
 {
     public class EntityHelper
     {
-        private IRepository repository;
+        private IRepository _repository;
 
         public EntityHelper(IRepository repository)
         {
-            this.repository = repository;
+            this._repository = repository;
         }
 
         public User GetUser(string login)
         {
-            return repository.GetUser(login);
+            return _repository.GetUser(login);
         }
 
         public List<Link> GetUserLinks(string login)
         {
-            return repository.GetUserLinks(login);
+            return _repository.GetUserLinks(login);
         }
     }
 }

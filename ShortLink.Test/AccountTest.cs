@@ -1,8 +1,5 @@
-﻿using System;
-using Microsoft.AspNetCore.Mvc.Internal;
-using Microsoft.IdentityModel.Clients.ActiveDirectory;
-using Xunit;
-using ShortLink.Controllers;
+﻿using Xunit;
+using ShortLink.Helpers;
 using ShortLink.Models;
 
 
@@ -10,14 +7,18 @@ namespace ShortLink.Test
 {
     public class AccountTest
     {
-        [Fact]
-        public void testGenerateToken()
+        private AccountHelper _helper;
+        public AccountTest()
         {
-            LinkController controller = new LinkController();
-            string token = "", newToken = "";
-           
-            token = controller.GenerateToken(new User{Login= "User1"});
-            newToken = controller.GenerateToken(new User { Login = "User2" });
+            _helper = new AccountHelper();
+        }
+
+        [Fact]
+        public void TestGenerateToken()
+        {
+            string token, newToken;
+            token = _helper.GenerateToken(new User{Login= "User1"});
+            newToken = _helper.GenerateToken(new User { Login = "User2" });
             Assert.NotEqual(token, newToken);
             
         }

@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -7,26 +6,11 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using ShortLink.Models;
 
-namespace ShortLink.Controllers
+namespace ShortLink.Helpers
 {
-    [Produces("application/json")]
-    [Route("api/Link")]
-    public class LinkController : Controller
+    public class AccountHelper
     {
-        private const string CHARS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-";
         const string SecretKey = "dhx|$O~[c>k8+]m1W<OG";
-
-        public string GenerateShortLink()
-        {
-            Random rnd = new Random();
-            string uid = "";
-            for (int i = 0; i < 5; i++)
-            {
-                uid += CHARS[rnd.Next(0, 63)];
-            }
-            return uid;
-        }
-
         public string GenerateToken(User user)
         {
             var claims = new List<Claim>

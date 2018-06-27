@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Moq;
 using ShortLink.Helpers;
+using ShortLink.Helpers.Abstract;
 using ShortLink.Models;
 using Xunit;
 
@@ -8,11 +9,10 @@ namespace ShortLink.Test
 {
     public class EntityTest
     {
-        private Mock<IRepository> repo;
-        private EntityHelper dbContext;
+        private EntityHelper _dbContext;
         public EntityTest()
         {
-            repo= new Mock<IRepository>();
+            var repo = new Mock<IRepository>();
             repo.Setup(u => u.GetUser(It.IsAny<string>())).Returns<string>(login => new User { Login = login });
             repo.Setup(u => u.GetUserLinks(It.IsAny<string>())).Returns<string>(login =>
             {
@@ -24,21 +24,21 @@ namespace ShortLink.Test
                 linkList.Add(link);
                 return linkList;
             });
-            dbContext = new EntityHelper(repo.Object);
+            _dbContext = new EntityHelper(repo.Object);
         }
 
 
         [Fact]
-        public void testGetUser()
+        public void TestGetUser()
         {
-            User user = dbContext.GetUser("User1");
+            User user = _dbContext.GetUser("User1");
             Assert.Equal(user.Login, new User{Login = "User1"}.Login); 
         }
 
         [Fact]
-        public void testGetLinks()
+        public void TestGetLinks()
         {
-            var links = dbContext.GetUserLinks("User1");
+            var links = _dbContext.GetUserLinks("User1");
             foreach (var link in links)
             {
                 Assert.Equal(link.User.Login, new User { Login = "User1" }.Login);

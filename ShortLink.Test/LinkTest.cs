@@ -1,21 +1,21 @@
-using System;
 using Xunit;
-using ShortLink.Controllers;
+
+using ShortLink.Helpers;
 
 namespace ShortLink.Test
 {
     public class LinkTest
     {
         [Fact]
-        public void testGenerateShortLink()
+        public void TestGenerateShortLink()
         {
-            LinkController controller = new LinkController();
-            string shortUrl = "", newShortUrl = "";
+            LinkHelper helper = new LinkHelper();
+            string shortUrl, newShortUrl;
             for (int i = 0; i< 50; i++)
             {
-                shortUrl = controller.GenerateShortLink();
+                shortUrl = helper.GenerateShortLink();
                 Assert.Equal(5, shortUrl.Length);
-                newShortUrl = controller.GenerateShortLink();
+                newShortUrl = helper.GenerateShortLink();
                 Assert.Equal(5, newShortUrl.Length);
                 Assert.NotEqual(shortUrl, newShortUrl);
             }  
