@@ -6,11 +6,10 @@ using ShortLink.Models;
 
 namespace ShortLink.Helpers
 {
-    public class UserRepository
+    public interface IRepository
     {
-        public User GetUser(string login)
-        {
-            return new User{Login = login};
-        }
+         User GetUser(string login);
+         List<Link> GetUserLinks(string login);
+
     }
 }
