@@ -28,20 +28,26 @@ namespace ShortLink.Test
         }
 
 
-        [Fact]
-        public void TestGetUser()
+        [Theory]
+        [InlineData("User1")]
+        [InlineData("User2")]
+        [InlineData("User3")]
+        public void TestGetUser(string login)
         {
-            User user = _dbContext.GetUser("User1");
-            Assert.Equal(user.Login, new User{Login = "User1"}.Login); 
+            User user = _dbContext.GetUser(login);
+            Assert.Equal(user, new User{Login = login}); 
         }
 
-        [Fact]
-        public void TestGetLinks()
+        [Theory]
+        [InlineData("User1")]
+        [InlineData("User2")]
+        [InlineData("User3")]
+        public void TestGetLinks(string login)
         {
-            var links = _dbContext.GetUserLinks("User1");
+            var links = _dbContext.GetUserLinks(login);
             foreach (var link in links)
             {
-                Assert.Equal(link.User.Login, new User { Login = "User1" }.Login);
+                Assert.Equal(link.User, new User { Login = login});
             }
             
         }
