@@ -16,8 +16,8 @@ namespace ShortLink.Test
             LinkController controller = new LinkController();
             string token = "", newToken = "";
            
-            token = controller.GetToken(new User{Login= "User1"});
-            newToken = controller.GetToken(new User { Login = "User2" });
+            token = controller.GenerateToken(new User{Login= "User1"});
+            newToken = controller.GenerateToken(new User { Login = "User2" });
             Assert.NotEqual(token, newToken);
             
         }

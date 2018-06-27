@@ -13,9 +13,9 @@ namespace ShortLink.Test
             string shortUrl = "", newShortUrl = "";
             for (int i = 0; i< 50; i++)
             {
-                shortUrl = controller.Generate();
+                shortUrl = controller.GenerateShortLink();
                 Assert.Equal(5, shortUrl.Length);
-                newShortUrl = controller.Generate();
+                newShortUrl = controller.GenerateShortLink();
                 Assert.Equal(5, newShortUrl.Length);
                 Assert.NotEqual(shortUrl, newShortUrl);
             }  

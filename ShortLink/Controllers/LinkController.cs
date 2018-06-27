@@ -16,7 +16,7 @@ namespace ShortLink.Controllers
         private const string CHARS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-";
         const string SecretKey = "dhx|$O~[c>k8+]m1W<OG";
 
-        public string Generate()
+        public string GenerateShortLink()
         {
             Random rnd = new Random();
             string uid = "";
@@ -27,7 +27,7 @@ namespace ShortLink.Controllers
             return uid;
         }
 
-        public string GetToken(User user)
+        public string GenerateToken(User user)
         {
             var claims = new List<Claim>
             {
