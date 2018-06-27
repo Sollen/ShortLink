@@ -10,16 +10,15 @@ namespace ShortLink.Test
         public void testGenerateShortLink()
         {
             LinkController controller = new LinkController();
-            
-            string shortUrl = controller.Generate();
-            Assert.Equal(5, shortUrl.Length);
-            string newShortUrl = controller.Generate();
-            Assert.Equal(5, newShortUrl.Length);
-            Assert.NotEqual(shortUrl, newShortUrl);
-
-            
-            
-
+            string shortUrl = "", newShortUrl = "";
+            for (int i = 0; i< 50; i++)
+            {
+                shortUrl = controller.Generate();
+                Assert.Equal(5, shortUrl.Length);
+                newShortUrl = controller.Generate();
+                Assert.Equal(5, newShortUrl.Length);
+                Assert.NotEqual(shortUrl, newShortUrl);
+            }  
         }
     }
 }
