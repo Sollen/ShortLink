@@ -5,8 +5,7 @@ namespace ShortLink.Helpers
     
     public class LinkHelper
     {
-        private const string Chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-";
-        
+        private const string Chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-";       
 
         public string GenerateShortLink()
         {

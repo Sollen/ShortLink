@@ -17,7 +17,7 @@ namespace ShortLink
         }
 
         public IConfiguration Configuration { get; }
-        const string SecretKey = "dhx|$O~[c>k8+]m1W<OG";
+        
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -35,7 +35,7 @@ namespace ShortLink
                         ValidateIssuerSigningKey = true,
                         IssuerSigningKey = AuthConfig.GetSymmetricSecurityKey()
 
-        };
+                    };
                 });
             services.AddMvc();
         }
