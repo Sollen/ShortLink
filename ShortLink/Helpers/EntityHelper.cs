@@ -15,22 +15,19 @@ namespace ShortLink.Helpers
         }
 
         public User GetUser(string login)
-        {
-            return _repository.GetUser(login);
+        {            
+            
+            return _repository.GetUser(login) ?? throw new UserNotFoundExcception(login);
         }
 
         public List<Link> GetUserLinks(string login)
-        {
-            List<Link> links =  _repository.GetUserLinks(login);
-            if (links == null) throw new LinkByUserNotFoundExcception(login);
-            return links;
+        {            
+            return _repository.GetUserLinks(login) ?? throw new LinkByUserNotFoundExcception(login);
         }
 
         public Link GetLink(string shortUri)
-        {
-            Link link = _repository.GetLink(shortUri);
-            if (link == null) throw new LinkByShortUriNotFoundExcception(shortUri);
-            return link;
+        {            
+            return _repository.GetLink(shortUri) ?? throw new LinkByShortUriNotFoundExcception(shortUri);
         }
 
         public class LinkByShortUriNotFoundExcception : Exception
@@ -42,6 +39,12 @@ namespace ShortLink.Helpers
         public class LinkByUserNotFoundExcception : Exception
         {
             public LinkByUserNotFoundExcception(string login) : base($"links for User: {login} not found")
+            {
+            }
+        }
+        public class UserNotFoundExcception : Exception
+        {
+            public UserNotFoundExcception(string login) : base($"User: {login} not found")
             {
             }
         }

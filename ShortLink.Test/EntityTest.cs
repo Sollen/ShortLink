@@ -14,7 +14,11 @@ namespace ShortLink.Test
         public EntityTest()
         {
             var repo = new Mock<IRepository>();
-            repo.Setup(u => u.GetUser(It.IsAny<string>())).Returns<string>(login => new User { Login = login });
+            repo.Setup(u => u.GetUser(It.IsAny<string>())).Returns<string>(login => {
+
+                if (login != "User1" && login != "User2" && login != "User3") return null;
+                return new User { Login = login };
+            });
             repo.Setup(u => u.GetUserLinks(It.IsAny<string>())).Returns<string>(login =>
             {
                 if (login != "User1" && login != "User2" && login != "User3") return null;
@@ -45,6 +49,17 @@ namespace ShortLink.Test
         }
 
         [Theory]
+        [InlineData("User4")]
+        [InlineData("User5")]
+        [InlineData("User6")]
+        public void TestUserNotFound(string login)
+        {
+            string message = $"User: {login} not found";
+            var exception = Assert.Throws<UserNotFoundExcception>(() => _dbContext.GetUser(login));
+            Assert.Equal(exception.Message, message);
+        }
+
+        [Theory]
         [InlineData("User1")]
         [InlineData("User2")]
         [InlineData("User3")]
@@ -56,6 +71,18 @@ namespace ShortLink.Test
                 Assert.Equal(link.User, new User { Login = login});
             }
             
+        }
+
+        [Theory]
+        [InlineData("User4")]
+        [InlineData("User5")]
+        [InlineData("User6")]
+        public void TestNotFoundLinksByUser(string login)
+        {
+            string message = $"links for User: {login} not found";
+            var exception = Assert.Throws<LinkByUserNotFoundExcception>(() => _dbContext.GetUserLinks(login));
+            Assert.Equal(exception.Message, message);
+
         }
 
         [Theory]
@@ -79,17 +106,7 @@ namespace ShortLink.Test
             Assert.Equal(exception.Message, message);
         }
         
-        [Theory]
-        [InlineData("User4")]
-        [InlineData("User5")]
-        [InlineData("User6")]
-        public void TestNotFoundLinksByUser(string login)
-        {
-            string message = $"links for User: {login} not found";
-            var exception = Assert.Throws<LinkByUserNotFoundExcception>(() => _dbContext.GetUserLinks(login));
-            Assert.Equal(exception.Message, message);
-
-        }
+        
 
     }
 }
