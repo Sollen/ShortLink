@@ -10,7 +10,7 @@ namespace ShortLink.Helpers
 {
     public class AccountHelper
     {
-        const string SecretKey = "dhx|$O~[c>k8+]m1W<OG";
+        
         public string GenerateToken(User user)
         {
             var claims = new List<Claim>
@@ -20,11 +20,12 @@ namespace ShortLink.Helpers
 
             var now = DateTime.UtcNow;
             var jwt = new JwtSecurityToken(
-                issuer: "MyAuthServer",
+                issuer: AuthConfig.Issuer,
                 notBefore: now,
                 claims: claims,
                 expires: now.Add(TimeSpan.FromMinutes(5)),
-                signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(SecretKey)), SecurityAlgorithms.HmacSha256));
+                signingCredentials: new SigningCredentials(AuthConfig.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
+
             return new JwtSecurityTokenHandler().WriteToken(jwt);
         }
     }

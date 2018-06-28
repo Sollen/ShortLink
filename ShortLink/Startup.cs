@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using ShortLink.Models;
+using System.Text;
 
 namespace ShortLink
 {
@@ -15,7 +17,7 @@ namespace ShortLink
         }
 
         public IConfiguration Configuration { get; }
-       
+        const string SecretKey = "dhx|$O~[c>k8+]m1W<OG";
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -27,13 +29,13 @@ namespace ShortLink
                     options.TokenValidationParameters = new TokenValidationParameters()
                     {
                         ValidateIssuer = true,
-                        ValidIssuer = "MyAuthServer",
+                        ValidIssuer = AuthConfig.Issuer,
                         ValidateAudience = false,
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
-                        
+                        IssuerSigningKey = AuthConfig.GetSymmetricSecurityKey()
 
-                    };
+        };
                 });
             services.AddMvc();
         }
