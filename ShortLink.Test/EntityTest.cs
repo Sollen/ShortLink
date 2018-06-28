@@ -4,6 +4,7 @@ using ShortLink.Helpers;
 using ShortLink.Helpers.Abstract;
 using ShortLink.Models;
 using Xunit;
+using static ShortLink.Helpers.EntityHelper;
 
 namespace ShortLink.Test
 {
@@ -16,6 +17,7 @@ namespace ShortLink.Test
             repo.Setup(u => u.GetUser(It.IsAny<string>())).Returns<string>(login => new User { Login = login });
             repo.Setup(u => u.GetUserLinks(It.IsAny<string>())).Returns<string>(login =>
             {
+                if (login != "User1" && login != "User2" && login != "User3") return null;
                 var linkList = new List<Link>();
                 var link = new Link()
                 {
@@ -24,10 +26,14 @@ namespace ShortLink.Test
                 linkList.Add(link);
                 return linkList;
             });
+            repo.Setup(u => u.GetLink(It.IsAny<string>())).Returns<string>(shortUri =>
+            {
+                if (shortUri != "zx34r" && shortUri != "qaswd" && shortUri != "qwert") return null;
+                return new Link() { ShortUri = shortUri, Uri = "www.google.com" }; ;
+            });
             _dbContext = new EntityHelper(repo.Object);
         }
-
-
+        
         [Theory]
         [InlineData("User1")]
         [InlineData("User2")]
@@ -42,7 +48,7 @@ namespace ShortLink.Test
         [InlineData("User1")]
         [InlineData("User2")]
         [InlineData("User3")]
-        public void TestGetLinks(string login)
+        public void TestGetLinksByUser(string login)
         {
             var links = _dbContext.GetUserLinks(login);
             foreach (var link in links)
@@ -51,5 +57,39 @@ namespace ShortLink.Test
             }
             
         }
+
+        [Theory]
+        [InlineData("qwert")]
+        [InlineData("qaswd")]
+        [InlineData("zx34r")]
+        public void TestGetLinkByShortUrl(string shortUri)
+        {
+            Link link = _dbContext.GetLink(shortUri);
+            Assert.Equal(shortUri, link.ShortUri);
+        }
+        
+        [Theory]
+        [InlineData("qwer1")]
+        [InlineData("qasw2")]
+        [InlineData("zx343")]
+        public void TestNotFoundLinkByShortUrl(string shortUri)
+        {
+            string message = $"link {shortUri} not found";
+            var exception = Assert.Throws<LinkByShortUriNotFoundExcception>(() => _dbContext.GetLink(shortUri));
+            Assert.Equal(exception.Message, message);
+        }
+        
+        [Theory]
+        [InlineData("User4")]
+        [InlineData("User5")]
+        [InlineData("User6")]
+        public void TestNotFoundLinksByUser(string login)
+        {
+            string message = $"links for User: {login} not found";
+            var exception = Assert.Throws<LinkByUserNotFoundExcception>(() => _dbContext.GetUserLinks(login));
+            Assert.Equal(exception.Message, message);
+
+        }
+
     }
 }

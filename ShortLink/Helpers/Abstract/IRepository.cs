@@ -5,8 +5,9 @@ namespace ShortLink.Helpers.Abstract
 {
     public interface IRepository
     {
-         User GetUser(string login);
-         List<Link> GetUserLinks(string login);
+        User GetUser(string login);
+        List<Link> GetUserLinks(string login);
+        Link GetLink(string shortUri);
 
     }
 }
