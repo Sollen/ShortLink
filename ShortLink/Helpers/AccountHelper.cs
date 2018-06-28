@@ -4,6 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
+using ShortLink.Config;
 using ShortLink.Models;
 
 namespace ShortLink.Helpers
@@ -24,9 +25,8 @@ namespace ShortLink.Helpers
                 notBefore: now,
                 claims: claims,
                 expires: now.Add(TimeSpan.FromMinutes(5)),
-                signingCredentials: new SigningCredentials(AuthConfig.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
-
-            return new JwtSecurityTokenHandler().WriteToken(jwt);
+                signingCredentials: new SigningCredentials(AuthConfig.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));            
+            return new JwtSecurityTokenHandler().WriteToken(jwt); 
         }
     }
 }

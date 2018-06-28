@@ -1,7 +1,7 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
-namespace ShortLink.Models
+namespace ShortLink.Config
 {
     public class AuthConfig
     {
